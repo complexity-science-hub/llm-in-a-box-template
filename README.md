@@ -1,7 +1,7 @@
 # LLM in a box template
 
-Making making the generative AI ecosystem approachable to more people.
-The goal is to have models from different providers - including self-hosted ones easily accessible for chatting and programmatic access.
+This template provides an easy-to-deploy, self-hostable stack to make the generative AI ecosystem more approachable for research and education.
+It unifies access to both commercial and local models (via Ollama) through a flexible chat UI and a single API endpoint, enabling private, reproducible, and sovereign AI workflows.
 
 This template project contains:
 
@@ -13,22 +13,17 @@ This template project contains:
 - A **model server** [ollama](https://ollama.com/)
 - State is stored in Postgres https://www.postgresql.org/
 
-It is built with [cruft](https://cruft.github.io/cruft/) so it is easy to update.
+This template is built with [cruft](https://cruft.github.io/cruft/) so it is easy to update.
 Furthermore secrets are managed with [sops](https://github.com/getsops/sops) and [age](https://github.com/FiloSottile/age).
 We use [traefik](https://traefik.io/traefik/) as a reverse proxy.
 
 ![Icon](img/llm-in-a-box-icon.png)
 
-
 ## Publication
 
-This project is part of the [Complexity Science Hub](https://complexity.science/) and is published under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+This project is a contribution of the [Complexity Science Hub](https://complexity.science/) and is published under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 This template project is published to [JOSE (journal of open source education)](https://jose.theoj.org/).
 You find the DOI here: <<TODO finish publication>>>
-
-## Contribution
-
-Feel free to contribute - issues & even better pull requests are welcome.
 
 ## Using the template
 
@@ -162,7 +157,21 @@ finally in your browser navigate to:
     - ensure the default openai API is disabled - and all traffic goes through the model router
 - Litelm model router: llm.llminabox.geoheil.com
 
-## Developing the template
+#### Kubernetes (advanced)
+
+This is a more advanced setup.
+We use [fluxcd](https://fluxcd.io/) and and [k3s](https://k3s.io/).
+
+
+For details see [Advanced setup](./docs/setup-advanced-k3s-fluxcd.md).
+
+> TODO: This is a work in progress. And will be updated in the future. For now, only the docker-compose based setup is available.
+
+## Contribution
+
+Feel free to contribute - issues & even better pull requests are welcome.
+
+### Developing the template
 
 To render an instance of the project:
 ```bash
@@ -175,11 +184,3 @@ see [rendered-template/*](rendered-template) for an example of how the peoject m
 # brings up the CPU template quickly
 pixi run start-template
 ```
-
-#### Kubernetes (advanced)
-
-This is a more advanced setup.
-We use [fluxcd](https://fluxcd.io/) and and [k3s](https://k3s.io/).
-
-
-For details see [Advanced setup](./docs/setup-advanced-k3s-fluxcd.md).
