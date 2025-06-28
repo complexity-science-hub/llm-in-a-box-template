@@ -88,10 +88,20 @@ Please read [the secops instructions](https://github.com/complexity-science-hub/
 Then you can start the template project with:
 ```bash
 # cpu
-docker compose --profile llminabox --profile ollama-cpu --profile docling-cpu --profile vectordb-cpu up -d
-
+docker compose \
+  --profile llminabox \
+  --profile ollama-cpu \
+  --profile docling-cpu \
+  --profile vectordb-cpu \
+  up -d
+  
 # gpu
-docker compose --profile llminabox --profile ollama-gpu --profile docling-gpu --profile vectordb-cpu up -d
+docker compose \
+  --profile llminabox \
+  --profile ollama-gpu \
+  --profile docling-gpu \
+  --profile vectordb-cpu \
+  up -d
 ```
 
 Please follow along with the [README.md](https://github.com/complexity-science-hub/llm-in-a-box-template/blob/main/README.md) file from here.
