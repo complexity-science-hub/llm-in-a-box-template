@@ -63,7 +63,9 @@ We've created an automated script to generate your `.env` file with secure value
 This will create a `.env` file with:
 - Auto-generated secure passwords and keys
 - Pre-configured domain settings for `project.docker`
-- Placeholders for API keys you need to add
+- Automatically detected timezone
+- API keys from your environment (if OPENAI_API_KEY or ANTHROPIC_API_KEY are set)
+- Standard database naming conventions (litellm, openwebui)
 
 ### 3. Add Your API Keys
 
