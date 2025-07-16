@@ -84,7 +84,7 @@ services:
   #     - auth_net
     
   modelserverollama-cpu:
-    image: ollama/ollama:0.9.3
+    image: ollama/ollama:0.9.6
     volumes:
       - ollama:/root/.ollama
     container_name: ollama
@@ -97,7 +97,7 @@ services:
         aliases:
           - ollama
   modelserverollama-gpu:
-    image: ollama/ollama:0.9.3
+    image: ollama/ollama:0.9.6
     #ports:
     #  - 11434:11434
     volumes:
@@ -118,37 +118,67 @@ services:
               count: all
               capabilities: [gpu]
 
-  # modelservervllm:
-  #   build:
-  #   # docker build -f docker/Dockerfile.cpu -t vllm-cpu-env --shm-size=4g .
-  #     context: ./services/model-server/vllm
-  #     # TODO select the right architecture/accelerator support here
-  #     # TODO document & expose as easy to use docker compose profile flags
-  #     # TODO add gpu claims here in case of GPU support
-  #     dockerfile: docker/Dockerfile.arm
-  #     target: build
-  #     shm_size: "4gb"
-  #     args:
-  #       # This version must match the checked out vllm version for the submodule
-  #       SETUPTOOLS_SCM_PRETEND_VERSION: "0.9.1"
-  #   image: llminabox/modelserver:v0.9.1-cpu-arm
-  #   container_name: modelserver
-  #   hostname: modelserver
-  #   environment:
-  #     HF_HOME: /models/.cache
-  #   # cpuset: "0-3"
-  #   command:
-  #     - "--model"
-  #     - "NousResearch/Meta-Llama-3-8B-Instruct"
-  #     - "--port"
-  #     - "8000"
-  #   # restart: unless-stopped
-  #   ports:
-  #     - "8000:8000"
-  #   profiles:
-  #     - model-server-cpu-arm
-  #   volumes:
-  #     - ./z_tmp/models:/models
+  modelservervllm:
+    build:
+    # docker build -f docker/Dockerfile.cpu -t vllm-cpu-env --shm-size=4g .
+    # docker build -f services/model-server/vllm/docker/Dockerfile.cpu -t vllm-cpu-env --shm-size=4g services/model-server/vllm
+      context: ./services/model-server/vllm
+      # TODO select the right architecture/accelerator support here
+      # TODO document & expose as easy to use docker compose profile flags
+      # TODO add gpu claims here in case of GPU support
+      dockerfile: docker/Dockerfile.arm
+      target: build
+      shm_size: "4gb"
+    image: llminabox/modelserver:v0.9.2-cpu-arm
+    container_name: modelserver
+    hostname: modelserver
+    environment:
+      HF_HOME: /root/models
+      HUGGING_FACE_HUB_TOKEN: ${HUGGING_FACE_HUB_TOKEN}
+      # In case a enterprise artifact repository and huggingface mirror is used
+      # HF_ENDPOINT: ${HF_ENDPOINT}
+      VLLM_CPU_OMP_THREADS_BIND: "all"   # or "0-3|4-7"
+      VLLM_CPU_KVCACHE_SPACE: "16"
+    # cpuset: "0-3"
+    command:
+      - "--model"
+      - "meta-llama/Llama-3.2-1B-Instruct"
+      # "microsoft/Phi-4-mini-instruct"
+      - "--port"
+      - "8000"
+    # restart: unless-stopped
+    ports:
+      - "8000:8000"
+    profiles:
+      - model-server-cpu-arm
+    volumes:
+      - vllm:/root/models
+  modelservervllm-gpu:
+    image: vllm/vllm-openai:v0.9.2
+    container_name: modelserver
+    hostname: modelserver
+    environment:
+      HF_HOME: /root/.vllm
+      HUGGING_FACE_HUB_TOKEN: ${HUGGING_FACE_HUB_TOKEN}
+      # In case a enterprise artifact repository and huggingface mirror is used
+      # HF_ENDPOINT: ${HF_ENDPOINT}
+      VLLM_CPU_OMP_THREADS_BIND: "all"   # or "0-3|4-7"
+      VLLM_CPU_KVCACHE_SPACE: "16"
+    # cpuset: "0-3"
+    command:
+      - "--model"
+      - "meta-llama/Llama-3.2-1B-Instruct"
+      # "microsoft/Phi-4-mini-instruct"
+      - "--port"
+      - "8000"
+    # restart: unless-stopped
+    ports:
+      - "8000:8000"
+    profiles:
+      - model-server-gpu
+    volumes:
+      - vllm:/root/.vllm
+
 
   # authdb:
   #   image: postgres:17.5-alpine3.22
@@ -263,7 +293,7 @@ services:
        - chatui_net
 
   docling-cpu:
-    image: quay.io/docling-project/docling-serve-cpu:v0.16.0
+    image: quay.io/docling-project/docling-serve-cpu:v1.0.0
     container_name: docling
     #ports:
     #  - 5001:5001
@@ -277,7 +307,7 @@ services:
       retries: 5
 
   docling-gpu:
-    image: quay.io/docling-project/docling-serve-cu124:v0.16.0
+    image: quay.io/docling-project/docling-serve-cu124:v1.0.0
     container_name: docling
     #ports:
     #  - 5001:5001
@@ -329,7 +359,7 @@ services:
   llm_chat_ui:
   # TODO: create GPU variation as well for faster whisper and embeddings
   # TODO add a vector database elastic? qdrant?
-    image: ghcr.io/open-webui/open-webui:v0.6.15
+    image: ghcr.io/open-webui/open-webui:v0.6.16
     container_name: chatui
     volumes:
       - open-webui:/app/backend/data
@@ -387,6 +417,7 @@ networks:
   
 volumes:
   ollama: {}
+  vllm: {}
   llm_model_router_db: {}
   #llm_model_auth_db: {}
   llm_chat_ui_db: {}
