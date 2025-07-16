@@ -71,6 +71,12 @@ pixi run tpl-init
 # cruft create git@github.com:complexity-science-hub/llm-in-a-box-template.git
 ```
 
+Ensure you have checked out vllm (afterwards):
+
+```
+git clone --branch v0.9.2 --depth 1 https://github.com/vllm-project/vllm.git services/model-server/vllm
+```
+
 Now set up your secrets in the `.env` file.
 See a template below.
 

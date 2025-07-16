@@ -5,13 +5,9 @@ Ensure the desired version of VLMM is selected here.
 ## initial setup
 
 ```
-git clone --branch v0.9.2 --depth 1 https://github.com/vllm-project/vllm.git
-
-# alternatively
-git submodule add https://github.com/vllm-project/vllm.git vllm
-cd vllm
-git checkout v0.9.2
+git clone --branch v0.9.2 --depth 1 https://github.com/vllm-project/vllm.git services/model-server/vllm
 ```
+
 
 ## gpu vs cpu
 
