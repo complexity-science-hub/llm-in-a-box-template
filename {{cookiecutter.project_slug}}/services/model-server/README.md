@@ -46,4 +46,13 @@ curl http://localhost:8000/v1/completions \
     "max_tokens": 7,
     "temperature": 0
   }'
+
+curl http://localhost:8000/v1/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "meta-llama/Llama-3.2-1B-Instruct",
+    "prompt": "San Francisco is a",
+    "max_tokens": 7,
+    "temperature": 0
+  }'
 ```
