@@ -1,0 +1,3 @@
+[submodule "{{cookiecutter.project_slug}}/services/model-server/vllm"]
+	path = {{cookiecutter.project_slug}}/services/model-server/vllm
+	url = https://github.com/vllm-project/vllm.git
