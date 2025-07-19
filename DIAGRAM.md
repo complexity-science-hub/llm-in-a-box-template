@@ -3,50 +3,118 @@
 ## Architecture Diagram
 
 ```mermaid
-flowchart TD
-  subgraph Core
-    UI["OpenWebUI (Chat UI)"]
-    Docling["Docling (Document Extraction)"]
-    Router["LiteLLM (Model Router)"]
-    Ollama["Ollama (Model Server)"]
-    Postgres["Postgres (State DB)"]
-    Traefik["Traefik (Reverse Proxy)"]
+flowchart TB
+  %% Core Services (Blue Box)
+  subgraph Core ["Core Services"]
+    direction TB
+    
+    Traefik["Traefik<br/>(Reverse Proxy)"]
+    
+    subgraph CoreMain ["Main Services"]
+      direction LR
+      OpenWebUI["OpenWebUI<br/>(Chat UI)"]
+      Docling["Docling<br/>(Document Extraction)"]
+    end
+    
+    subgraph CoreBackend ["Backend Services"]
+      direction LR
+      LiteLLM["LiteLLM<br/>(Model Router)"]
+      Ollama["Ollama<br/>(Model Server)"]
+    end
+    
+    Postgres["Postgres<br/>(State DB)"]
   end
-  UI -->|API| Router
-  Docling -->|RAG| Router
-  Router -->|Model API| Ollama
-  Router -->|State| Postgres
-  UI -->|State| Postgres
-  Traefik --> UI
-  Traefik --> Router
+  
+  %% Addon Services (Yellow Box)
+  subgraph Addons ["Addon Services"]
+    direction TB
+    
+    subgraph AddonsTop ["Infrastructure"]
+      direction LR
+      API["API Gateway<br/>(e.g. Kong)"]
+      Monitoring["Monitoring<br/>(Prometheus/Grafana)"]
+      SSO["SSO/Identity<br/>(Keycloak)"]
+    end
+    
+    subgraph AddonsMiddle ["Data & Storage"]
+      direction LR
+      FileStore["Object Storage<br/>(MinIO/S3)"]
+      Qdrant["Qdrant<br/>(Vector DB)"]
+      DataViz["Data Visualization<br/>(Metabase)"]
+    end
+    
+    subgraph AddonsBottom ["Workflow & Automation"]
+      direction LR
+      Workflow["Workflow Engines<br/>(Temporal)"]
+      Notebooks["Jupyter/Polynote<br/>(Notebooks)"]
+      n8n["n8n<br/>(Automation)"]
+    end
+  end
+  
+  %% Core Internal Connections
+  Traefik --> OpenWebUI
   Traefik --> Docling
+  Traefik --> LiteLLM
   Traefik --> Ollama
-
-  subgraph Addons
-    n8n["n8n (Automation/Orchestration)"]
-    Qdrant["Qdrant (Vector DB)"]
-    SSO["SSO/Identity Provider"]
-    Monitoring["Monitoring/Observability"]
-    FileStore["Object/File Storage (e.g. MinIO)"]
-    Notebooks["Jupyter/Polynote (Notebooks)"]
-    DataViz["Data Visualization (e.g. Metabase)"]
-    Workflow["Workflow Engines (e.g. Temporal)"]
-    API["API Gateway (e.g. Kong)"]
-  end
-  UI --- n8n
-  Router --- Qdrant
-  Traefik --- SSO
-  Traefik --- Monitoring
-  Docling --- FileStore
-  UI --- Notebooks
-  UI --- DataViz
-  Router --- Workflow
-  Traefik --- API
-
-  classDef core fill:#e0f7fa,stroke:#00796b,stroke-width:2px;
-  classDef addon fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
-  class Core core;
-  class Addons addon;
+  
+  OpenWebUI -->|API| LiteLLM
+  OpenWebUI -->|State| Postgres
+  
+  Docling -->|RAG| LiteLLM
+  Docling -->|State| Postgres
+  
+  LiteLLM -->|Model API| Ollama
+  LiteLLM -->|State| Postgres
+  
+  %% Addon to Core Connections (with labels)
+  API -.->|"Proxy"| Traefik
+  Monitoring -.->|"Metrics"| Traefik
+  Monitoring -.->|"Health"| OpenWebUI
+  Monitoring -.->|"Performance"| LiteLLM
+  Monitoring -.->|"Resources"| Ollama
+  Monitoring -.->|"Database"| Postgres
+  
+  SSO -.->|"Auth"| Traefik
+  SSO -.->|"Login"| OpenWebUI
+  
+  FileStore -.->|"Documents"| Docling
+  FileStore -.->|"Models"| Ollama
+  
+  Qdrant -.->|"Vector Search"| Docling
+  Qdrant -.->|"Embeddings"| LiteLLM
+  
+  DataViz -.->|"Analytics"| Postgres
+  
+  Workflow -.->|"Orchestration"| Docling
+  Workflow -.->|"Model Calls"| LiteLLM
+  Workflow -.->|"Inference"| Ollama
+  
+  Notebooks -.->|"Data Processing"| Docling
+  Notebooks -.->|"Model Testing"| LiteLLM
+  Notebooks -.->|"Experiments"| Ollama
+  Notebooks -.->|"Analysis"| Postgres
+  
+  n8n -.->|"Automation"| Docling
+  n8n -.->|"API Integration"| LiteLLM
+  n8n -.->|"Model Pipeline"| Ollama
+  n8n -.->|"Data Sync"| Postgres
+  
+  %% Styling
+  classDef core fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#0d47a1
+  classDef addon fill:#fff8e1,stroke:#f57c00,stroke-width:2px,color:#e65100
+  classDef coreMain fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+  classDef coreBackend fill:#90caf9,stroke:#1976d2,stroke-width:2px
+  classDef addonTop fill:#ffecb3,stroke:#f57c00,stroke-width:2px
+  classDef addonMiddle fill:#ffe0b2,stroke:#f57c00,stroke-width:2px
+  classDef addonBottom fill:#ffcc02,stroke:#f57c00,stroke-width:2px
+  
+  class Core core
+  class Addons addon
+  class CoreMain coreMain
+  class CoreBackend coreBackend
+  class AddonsTop addonTop
+  class AddonsMiddle addonMiddle
+  class AddonsBottom addonBottom
 ```
 
 ---
