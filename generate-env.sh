@@ -25,37 +25,14 @@ generate_password() {
     echo "$(openssl rand -base64 12 | tr -d "=+/" | cut -c1-8)$(shuf -i 1000-9999 -n 1)"
 }
 
-# Function to detect timezone
-detect_timezone() {
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        # macOS
-        if [ -f /etc/localtime ]; then
-            readlink /etc/localtime | sed 's/.*zoneinfo\///'
-        else
-            echo "UTC"
-        fi
-    elif [ -f /etc/timezone ]; then
-        # Debian/Ubuntu
-        cat /etc/timezone
-    elif [ -h /etc/localtime ]; then
-        # RHEL/CentOS/Fedora
-        readlink /etc/localtime | sed 's/.*zoneinfo\///'
-    else
-        # Default
-        echo "UTC"
-    fi
-}
-
 # Start with template
 cat > .env << 'EOF'
 # Domain configuration
 ROOT_DOMAIN=project.docker
 CLOUDFLARE_IPS=173.245.48.0/20,103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,141.101.64.0/18,108.162.192.0/18,190.93.240.0/20,188.114.96.0/20,197.234.240.0/22,198.41.128.0/17,162.158.0.0/15,104.16.0.0/13,104.24.0.0/14,172.64.0.0/13,131.0.72.0/22
 LOCAL_IPS=127.0.0.1/32,10.0.0.0/8,192.168.0.0/16,172.16.0.0/12
+TZ=UTC
 EOF
-
-# Add timezone
-echo "TZ=$(detect_timezone)" >> .env
 
 # Add database configuration with standard naming
 cat >> .env << 'EOF'
@@ -101,6 +78,18 @@ else
     echo "ROUTER_ANTHROPIC_API_KEY=sk-CHANGEME_YOUR_ANTHROPIC_KEY" >> .env
 fi
 
+# Check for Hugging Face key in environment
+if [ -n "$HUGGING_FACE_HUB_TOKEN" ]; then
+    echo "" >> .env
+    echo "HUGGING_FACE_HUB_TOKEN=$HUGGING_FACE_HUB_TOKEN" >> .env
+    echo "   ✅ Found Hugging Face API key in environment"
+else
+    echo "" >> .env
+    echo "# Hugging Face API Key" >> .env
+    echo "# Get from: https://huggingface.co/settings/tokens" >> .env
+    echo "HUGGING_FACE_HUB_TOKEN=hf_CHANGEME_YOUR_HUGGING_FACE_API_KEY" >> .env
+fi
+
 # Add Chat UI database configuration
 cat >> .env << 'EOF'
 
@@ -122,7 +111,7 @@ echo ""
 echo "✅ .env file generated successfully!"
 echo ""
 echo "📋 Configuration summary:"
-echo "   - Timezone: $(detect_timezone)"
+echo "   - Timezone: UTC"
 echo "   - Domain: project.docker"
 
 # Check which API keys still need to be added
@@ -132,6 +121,9 @@ if [ -z "$OPENAI_API_KEY" ] && grep -q "CHANGEME_YOUR_OPENAI_KEY" .env; then
 fi
 if [ -z "$ANTHROPIC_API_KEY" ] && grep -q "CHANGEME_YOUR_ANTHROPIC_KEY" .env; then
     missing_keys="$missing_keys\n   - ROUTER_ANTHROPIC_API_KEY: Get from https://console.anthropic.com/settings/keys"
+fi
+if [ -z "$HUGGING_FACE_HUB_TOKEN" ] && grep -q "CHANGEME_YOUR_HUGGING_FACE_API_KEY" .env; then
+    missing_keys="$missing_keys\n   - HUGGING_FACE_HUB_TOKEN: Get from https://huggingface.co/settings/tokens"
 fi
 
 if [ -n "$missing_keys" ]; then
