@@ -107,8 +107,40 @@ Add-Content C:\Windows\System32\drivers\etc\hosts "127.0.0.1 chat.project.docker
 
 ## Start the Services
 
-### CPU-Only Setup (Recommended for Testing)
+### Basic Setup (Recommended for Testing)
 
+The `llminabox` profile includes the core services needed to get started:
+
+```bash
+docker compose --profile llminabox up -d
+```
+
+This starts:
+- **Traefik Proxy** (port 80) - Reverse proxy for routing requests
+- **LiteLLM Router** - Model routing and API management
+- **Open WebUI** - Chat interface
+- **PostgreSQL databases** - For LiteLLM and Open WebUI
+
+### Extended Setup (Optional Services)
+
+If you want additional capabilities, you can add:
+
+#### Local Model Support (Ollama)
+```bash
+docker compose --profile llminabox --profile ollama-cpu up -d
+```
+
+#### Document Processing (Docling)
+```bash
+docker compose --profile llminabox --profile docling-cpu up -d
+```
+
+#### Vector Database (Qdrant)
+```bash
+docker compose --profile llminabox --profile vectordb-cpu up -d
+```
+
+#### Full Extended Setup
 ```bash
 docker compose --profile llminabox --profile ollama-cpu --profile docling-cpu --profile vectordb-cpu up -d
 ```
@@ -126,29 +158,18 @@ docker compose logs -f
 
 ## Initial Configuration
 
-### 1. Pull a Local Model (Ollama)
-
-First, let's download a model to test with:
-
-```bash
-# Pull a small, fast model for testing
-docker exec -it ollama ollama pull gemma2:2b
-
-# Or pull a larger, more capable model
-docker exec -it ollama ollama pull llama3.2:3b
-
-# Verify the model is downloaded
-docker exec -it ollama ollama list
-```
-
-### 2. Configure the Model Router (LiteLLM)
+### 1. Configure the Model Router (LiteLLM)
 
 1. Open: http://llm.project.docker/ui
 2. Login with credentials from your `.env`:
    - Username: `admin` (or what you set for `LITELLM_UI_USERNAME`)
    - Password: (check `LITELLM_UI_PASSWORD` in your `.env`)
 
-3. Register your local Ollama model:
+3. Register external models (if you added API keys):
+   - OpenAI models are auto-detected if API key is set
+   - For Claude, add models like `claude-3-sonnet-20240229`
+
+4. If you started Ollama, register your local models:
    - Click "Add Model"
    - Configure:
      ```yaml
@@ -158,10 +179,6 @@ docker exec -it ollama ollama list
        api_base: "http://ollama:11434"
      ```
 
-4. Register external models (if you added API keys):
-   - OpenAI models are auto-detected if API key is set
-   - For Claude, add models like `claude-3-sonnet-20240229`
-
 5. Create an API key for the Chat UI:
    - Go to "Keys" section
    - Click "Create Key"
@@ -169,7 +186,7 @@ docker exec -it ollama ollama list
    - Select all models you want to make available
    - Copy the generated key
 
-### 3. Configure the Chat UI (Open WebUI)
+### 2. Configure the Chat UI (Open WebUI)
 
 1. Open: http://chat.project.docker
 2. Create an admin account:
@@ -188,20 +205,35 @@ docker exec -it ollama ollama list
    - Go to the chat interface
    - Check that your models appear in the model selector
 
+### 3. Pull Local Models (If Using Ollama)
+
+If you started Ollama, download models to test with:
+
+```bash
+# Pull a small, fast model for testing
+docker exec -it ollama ollama pull gemma2:2b
+
+# Or pull a larger, more capable model
+docker exec -it ollama ollama pull llama3.2:3b
+
+# Verify the model is downloaded
+docker exec -it ollama ollama list
+```
+
 ## Testing Your Setup
 
-1. **Test Ollama directly:**
-   ```bash
-   docker exec -it ollama ollama run gemma2:2b "Hello, how are you?"
-   ```
-
-2. **Test via LiteLLM:**
+1. **Test via LiteLLM:**
    - Go to http://llm.project.docker/ui
    - Use the Playground to test models
 
-3. **Test via Chat UI:**
+2. **Test via Chat UI:**
    - Go to http://chat.project.docker
    - Start a new chat and select a model
+
+3. **Test Ollama directly (if started):**
+   ```bash
+   docker exec -it ollama ollama run gemma2:2b "Hello, how are you?"
+   ```
 
 ## Service URLs
 
@@ -219,17 +251,19 @@ docker compose ps
 # View detailed logs
 docker compose logs [service-name]
 
-# Common services: ollama, llmrouter, chatui, routerdb, chatuidb
+# Common services: llmrouter, chatui, routerdb, chatuidb
 ```
 
 ### Can't access URLs?
 - Ensure hosts file is updated (see Configure Local Domain)
-- Check if ports 80 is available: `lsof -i :80` (macOS/Linux)
+- Check if port 80 is available: `lsof -i :80` (macOS/Linux)
 - Try accessing via localhost: http://localhost instead
+- Verify the proxy is running: `docker compose logs proxy`
 
 ### Models not showing up?
-1. Ensure models are pulled in Ollama
-2. Restart the model router after adding models:
+1. Ensure API keys are properly set in `.env`
+2. If using Ollama, ensure models are pulled
+3. Restart the model router after adding models:
    ```bash
    docker compose restart llmrouter
    ```
@@ -240,9 +274,9 @@ docker compose logs [service-name]
 
 ## Next Steps
 
-1. **Add more models**: Explore https://ollama.com/library for more models
-2. **Configure document extraction**: The Docling service enables advanced RAG capabilities
-3. **Set up vector search**: Qdrant is included for semantic search
+1. **Add local models**: Start Ollama and explore https://ollama.com/library
+2. **Configure document extraction**: Start Docling for advanced RAG capabilities
+3. **Set up vector search**: Start Qdrant for semantic search
 4. **Production setup**: 
    - Enable HTTPS with proper certificates
    - Configure authentication (Keycloak is included but disabled)
@@ -265,8 +299,8 @@ docker compose up -d
 docker stats
 
 # Execute commands in containers
-docker exec -it ollama /bin/bash
 docker exec -it llmrouter /bin/bash
+docker exec -it chatui /bin/bash
 ```
 
 ## Support
