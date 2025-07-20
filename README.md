@@ -25,6 +25,8 @@ This project is a contribution of the [Complexity Science Hub](https://complexit
 This template project is published to [JOSE (journal of open source education)](https://jose.theoj.org/).
 You find the DOI here: <<TODO finish publication>>>
 
+The source code for the publication is availabe in the `docs/paper.md` file.
+
 ## Using the template
 
 We intend to eventually have more deployment processes scaffolded. However, this is usually fairly specific for a given organization.
@@ -33,6 +35,8 @@ And perhaps later will add soemthing for Kubernets with fluxcd.
 
 You may want to customize a productiion grade deployment for SSL handling and SSO.
 But we hope this gives you a good starting point.
+
+See the [QUICKSTART.md](./docs/QUICKSTART.md) for an in-depth quick start guide.
 
 ### Prerequisites
 
