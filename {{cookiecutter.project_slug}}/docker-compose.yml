@@ -293,7 +293,8 @@ services:
        - chatui_net
 
   docling-cpu:
-    image: quay.io/docling-project/docling-serve-cpu:v1.0.0
+    # v1.0.0 has some incompatibilities still
+    image: quay.io/docling-project/docling-serve-cpu:v0.16.1
     container_name: docling
     #ports:
     #  - 5001:5001
@@ -307,7 +308,8 @@ services:
       retries: 5
 
   docling-gpu:
-    image: quay.io/docling-project/docling-serve-cu124:v1.0.0
+    # v1.0.0 has some incompatibilities still
+    image: quay.io/docling-project/docling-serve-cu124:v0.16.1
     container_name: docling
     #ports:
     #  - 5001:5001
