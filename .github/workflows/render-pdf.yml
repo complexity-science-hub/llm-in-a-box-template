@@ -14,9 +14,9 @@ jobs:
         uses: docker://openjournals/paperdraft:latest
         with:
           journal: joss
-          args: '-k ./paper.md'
+          args: '-k ./docs/paper.md'
       - name: Upload PDF to Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: generated-paper
-          path: ./paper.pdf
+          path: ./docs/paper.pdf

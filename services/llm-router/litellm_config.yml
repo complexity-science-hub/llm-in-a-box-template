@@ -1,0 +1,77 @@
+general_settings:
+  master_key: "os.environ/LITELLM_MASTER_KEY"
+  block_robots: true
+  #alerting: ["slack"]      # Setup slack alerting - get alerts on LLM exceptions, Budget Alerts, Slow LLM Responses
+  proxy_batch_write_at: 60 # Batch write spend updates every 60s
+  database_connection_pool_limit: 10 # limit the number of database connections to = MAX Number of DB Connections/Number of instances of litellm proxy (Around 10-20 is good number)
+
+  # OPTIONAL Best Practices
+  #disable_spend_logs: True # turn off writing each transaction to the db. We recommend doing this is you don't need to see Usage on the LiteLLM UI and are tracking metrics via Prometheus
+  disable_error_logs: True # turn off writing LLM Exceptions to DB
+  #allow_requests_on_db_unavailable: True # Only USE when running LiteLLM on your VPC. Allow requests to still be processed even if the DB is unavailable. We recommend doing this if you're running LiteLLM on VPC that cannot be accessed from the public internet.
+
+litellm_settings:
+  request_timeout: 600    # raise Timeout error if call takes longer than 600 seconds. Default value is 6000seconds if not set
+  #set_verbose: False      # Switch off Debug Logging, ensure your logs do not have any debugging on
+  #json_logs: true         # Get debug logs in json format
+model_list:
+  - model_name: gpt-4.1-2025-04-14
+    litellm_params:
+      model: openai/gpt-4.1-2025-04-14
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: gpt-4o-2024-11-20
+    litellm_params:
+      model: openai/gpt-4o-2024-11-20
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: gpt-4o-mini-2024-07-18
+    litellm_params:
+      model: openai/gpt-4o-mini-2024-07-18
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: claude-sonnet-4-20250514
+    litellm_params:
+      model: claude-sonnet-4-20250514
+      api_key: "os.environ/ANTHROPIC_API_KEY"
+  - model_name: claude-3-7-sonnet-20250219
+    litellm_params:
+      model: claude-3-7-sonnet-20250219
+      api_key: "os.environ/ANTHROPIC_API_KEY"
+  - model_name: gemini-2.5-flash-preview-05-20
+    litellm_params:
+      model: vertex_ai/gemini-2.5-flash-preview-05-20
+      vertex_project: "ascii-450914"
+      vertex_location: "us-central1"
+      vertex_credentials: "/secrets/google_vertexai.json"
+  - model_name: gemini-2.5-pro-preview-06-05
+    litellm_params:
+      model: vertex_ai/gemini-2.5-pro-preview-06-05
+      vertex_project: "ascii-450914"
+      vertex_location: "global"
+      vertex_credentials: "/secrets/google_vertexai.json"
+  - model_name: gemini-2.5-pro-preview-05-06
+    litellm_params:
+      model: vertex_ai/gemini-2.5-pro-preview-05-06
+      vertex_project: "ascii-450914"
+      vertex_location: "us-central1"
+      vertex_credentials: "/secrets/google_vertexai.json"
+  - model_name: gemini-2.5-flash-preview-04-17
+    litellm_params:
+      model: vertex_ai/gemini-2.5-flash-preview-04-17
+      vertex_project: "ascii-450914"
+      vertex_location: "us-central1"
+      vertex_credentials: "/secrets/google_vertexai.json"
+  - model_name: gemini-2.0-flash-preview-image-generation
+    litellm_params:
+      model: vertex_ai/gemini-2.0-flash-preview-image-generation
+      vertex_project: "ascii-450914"
+      vertex_location: "us-central1"
+      vertex_credentials: "/secrets/google_vertexai.json"
+  - model_name: gemini-2.0-flash-lite-001
+    litellm_params:
+      model: vertex_ai/gemini-2.0-flash-lite-001
+      vertex_project: "ascii-450914"
+      vertex_location: "us-central1"
+      vertex_credentials: "/secrets/google_vertexai.json"
+  - model_name: "gemma3:4b"
+    litellm_params:
+      model: "ollama_chat/gemma3:4b"
+      api_base: "http://ollama:11434"
