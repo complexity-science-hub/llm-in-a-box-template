@@ -83,6 +83,12 @@ You'll need to manually add API keys for the AI models you want to use:
 3. Copy the key (starts with `sk-ant-`)
 4. Edit `.env` and replace `sk-CHANGEME_YOUR_ANTHROPIC_KEY` with your key
 
+#### self hosted models (Ollama)
+
+1. connect to the ollama docker container (after executing the docker start commands you find later in the instructions)
+2. connect to the container `docker exec -it ollama /bin/bash`
+3. pull the desired models `ollama pull gemma2:2b` (or any other model you want to use)
+
 #### Other Providers (Optional)
 - **Google Gemini**: https://aistudio.google.com/apikey
 - **Vertex AI**: Requires GCP project setup
@@ -306,7 +312,8 @@ docker exec -it chatui /bin/bash
 ## Support
 
 - Check the main README for architectural details
-- Report issues at: https://github.com/anthropics/claude-code/issues
+- Report issues at: https://github.com/complexity-science-hub/llm-in-a-box-template/issues
 - LiteLLM docs: https://docs.litellm.ai/
 - Open WebUI docs: https://docs.openwebui.com/
 - Ollama docs: https://ollama.com/
+- docling docs: https://docling-project.github.io/docling/

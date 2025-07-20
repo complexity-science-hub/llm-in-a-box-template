@@ -6,6 +6,10 @@ When working with local development environments on your laptop, you have flexib
 
 Here are some common practices and considerations:
 
+### 0. Using a proper DNS with redircts
+
+-  http://*.llminabox.geoheil.com will redirect to 127.0.0.1
+- 
 ### 1. Using `.localhost`
 
 The `.localhost` Top-Level Domain (TLD) is specifically reserved for loopback purposes, making it an excellent choice for local development.
@@ -33,12 +37,3 @@ For instance, if you own `example.com`, you could use `corp.example.com` for you
 
 This strategy helps prevent potential conflicts with publicly registered domains and allows for smoother transitions if your local projects are eventually deployed to production environments.
 
-## Important considerations
-
-Avoid using `.local` unless you specifically intend to use it for multicast DNS (mDNS) purposes, as conflicts can arise with other systems that expect it to function in this way.
-
-When using custom local domains, remember to modify your operating system's `/etc/hosts` file or configure a local DNS server like dnsmasq or your router's DNS settings to ensure proper resolution.
-
-Consider using tools like [OrbStack for macOS](https://docs.orbstack.dev/docker/domains) users, as it simplifies the process of setting up and managing Docker container domains and even provides automatic HTTPS certificates for your local domains.
-
-By following these guidelines and understanding the available options, you can effectively choose and manage local root domains for your development projects on a laptop.
