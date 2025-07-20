@@ -217,3 +217,4 @@ pyrightconfig.json
 {{ cookiecutter.project_slug }}/services/llm-router/google_vertexai.json
 rendered-template/
 key.txt
+{{cookiecutter.project_slug}}/services/llm-router/google_vertexai.json
