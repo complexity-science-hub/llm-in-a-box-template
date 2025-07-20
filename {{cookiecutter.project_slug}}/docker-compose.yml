@@ -222,7 +222,7 @@ services:
        - model_router_net
 
   llm_router:
-    image: litellm/litellm:v1.72.0-stable
+    image: litellm/litellm:v1.74.3-stable
     platform: linux/amd64
     container_name: llmrouter
     restart: unless-stopped
@@ -328,7 +328,7 @@ services:
               capabilities: [gpu]
 
   vectordb-qdrant-cpu:
-    image: qdrant/qdrant:v1.14.1
+    image: qdrant/qdrant:v1.15.0
     container_name: qdrant
     hostname: qdrant
     restart: unless-stopped
@@ -359,7 +359,7 @@ services:
   llm_chat_ui:
   # TODO: create GPU variation as well for faster whisper and embeddings
   # TODO add a vector database elastic? qdrant?
-    image: ghcr.io/open-webui/open-webui:v0.6.16
+    image: ghcr.io/open-webui/open-webui:v0.6.18
     container_name: chatui
     volumes:
       - open-webui:/app/backend/data
