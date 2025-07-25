@@ -64,10 +64,10 @@ For now we assume you are using docker.
 
 ```bash
 pixi shell -e dev
-git clone git@github.com:complexity-science-hub/llm-in-a-box-template.git
+git clone https://github.com/complexity-science-hub/llm-in-a-box-template.git
 cd llm-in-a-box-template
 
-pixi run tpl-init
+pixi run tpl-init-cruft
 
 
 # alternatively:
