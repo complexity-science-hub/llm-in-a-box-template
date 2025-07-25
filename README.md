@@ -142,7 +142,7 @@ finally in your browser navigate to:
    - possibly modify other model registrations
      - ensure you have API keys for all the models you want to use
      - Openai
-     - Claoude
+     - Claude
      - Gemini
      - VertexAI: make sure to set the right google cloud project
    - stop and restart the model router
