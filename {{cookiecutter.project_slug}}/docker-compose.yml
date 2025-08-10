@@ -293,8 +293,7 @@ services:
        - chatui_net
 
   docling-cpu:
-    # v1.0.0 has some incompatibilities still
-    image: quay.io/docling-project/docling-serve-cpu:v0.16.1
+    image: quay.io/docling-project/docling-serve-cpu:v1.1.0
     container_name: docling
     #ports:
     #  - 5001:5001
@@ -308,8 +307,7 @@ services:
       retries: 5
 
   docling-gpu:
-    # v1.0.0 has some incompatibilities still
-    image: quay.io/docling-project/docling-serve-cu124:v0.16.1
+    image: quay.io/docling-project/docling-serve-cu124:v1.1.0
     container_name: docling
     #ports:
     #  - 5001:5001
@@ -361,7 +359,7 @@ services:
   llm_chat_ui:
   # TODO: create GPU variation as well for faster whisper and embeddings
   # TODO add a vector database elastic? qdrant?
-    image: ghcr.io/open-webui/open-webui:v0.6.18
+    image: ghcr.io/open-webui/open-webui:v0.6.20
     container_name: chatui
     volumes:
       - open-webui:/app/backend/data
