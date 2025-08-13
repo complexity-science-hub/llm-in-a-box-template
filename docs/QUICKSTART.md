@@ -47,8 +47,7 @@ docker compose version
 git clone <your-repo-url>
 cd llm-in-a-box-template
 
-# Switch to develop branch
-git checkout develop
+pixi run tpl-init-cruft
 ```
 
 ### 2. Set Up Environment Variables
