@@ -219,3 +219,4 @@ rendered-template/
 key.txt
 {{cookiecutter.project_slug}}/services/llm-router/google_vertexai.json
 .idea/
+llm_in_a_box/

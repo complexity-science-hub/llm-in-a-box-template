@@ -66,9 +66,7 @@ For now we assume you are using docker.
 pixi shell -e dev
 git clone https://github.com/complexity-science-hub/llm-in-a-box-template.git
 cd llm-in-a-box-template
-
 pixi run tpl-init-cruft
-
 
 # alternatively:
 # pip install cruft jinja2-ospath
@@ -78,7 +76,7 @@ pixi run tpl-init-cruft
 Ensure you have checked out vllm (afterwards):
 
 ```
-git clone --branch v0.9.2 --depth 1 https://github.com/vllm-project/vllm.git services/model-server/vllm
+git clone --branch v0.10.0 --depth 1 https://github.com/vllm-project/vllm.git services/model-server/vllm
 ```
 
 Now set up your secrets in the `.env` file.
