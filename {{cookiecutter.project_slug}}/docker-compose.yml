@@ -359,7 +359,7 @@ services:
   llm_chat_ui:
   # TODO: create GPU variation as well for faster whisper and embeddings
   # TODO add a vector database elastic? qdrant?
-    image: ghcr.io/open-webui/open-webui:v0.6.24
+    image: ghcr.io/open-webui/open-webui:v0.6.25
     container_name: chatui
     volumes:
       - open-webui:/app/backend/data
