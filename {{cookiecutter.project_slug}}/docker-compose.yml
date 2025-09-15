@@ -1,7 +1,7 @@
 # https://geshan.com.np/blog/2025/02/ollama-docker-compose/
 services:
   proxy:
-    image: traefik:v3.4
+    image: traefik:v3.5
     container_name: proxy
     ports:
       - "80:80"
@@ -84,7 +84,7 @@ services:
   #     - auth_net
     
   modelserverollama-cpu:
-    image: ollama/ollama:0.11.6
+    image: ollama/ollama:0.11.10
     volumes:
       - ollama:/root/.ollama
     container_name: ollama
@@ -97,7 +97,7 @@ services:
         aliases:
           - ollama
   modelserverollama-gpu:
-    image: ollama/ollama:0.11.6
+    image: ollama/ollama:0.11.10
     #ports:
     #  - 11434:11434
     volumes:
@@ -154,7 +154,7 @@ services:
     volumes:
       - vllm:/root/models
   modelservervllm-gpu:
-    image: vllm/vllm-openai:v0.10.0
+    image: vllm/vllm-openai:v0.10.2
     container_name: modelserver
     hostname: modelserver
     environment:
@@ -200,7 +200,7 @@ services:
   #   networks:
   #      - auth_net
   routerdb:
-    image: postgres:17.5-alpine3.22
+    image: postgres:17.6-alpine3.22
     container_name: routerdb
     restart: unless-stopped
     environment:
@@ -222,7 +222,7 @@ services:
        - model_router_net
 
   llm_router:
-    image: litellm/litellm:v1.74.3-stable
+    image: litellm/litellm:v1.74.9-stable
     platform: linux/amd64
     container_name: llmrouter
     restart: unless-stopped
@@ -272,7 +272,7 @@ services:
       - "traefik.http.routers.litellm.middlewares=chain-no-auth@file"
 
   chatuidb:
-    image: postgres:17.5-alpine3.22
+    image: postgres:17.6-alpine3.22
     container_name: chatuidb
     restart: unless-stopped
     environment:
@@ -359,7 +359,7 @@ services:
   llm_chat_ui:
   # TODO: create GPU variation as well for faster whisper and embeddings
   # TODO add a vector database elastic? qdrant?
-    image: ghcr.io/open-webui/open-webui:v0.6.26
+    image: ghcr.io/open-webui/open-webui:v0.6.28
     container_name: chatui
     volumes:
       - open-webui:/app/backend/data
