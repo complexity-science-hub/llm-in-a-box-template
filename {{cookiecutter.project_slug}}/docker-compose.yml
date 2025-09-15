@@ -328,7 +328,7 @@ services:
               capabilities: [gpu]
 
   vectordb-qdrant-cpu:
-    image: qdrant/qdrant:v1.15.2
+    image: qdrant/qdrant:v1.15.4
     container_name: qdrant
     hostname: qdrant
     restart: unless-stopped
