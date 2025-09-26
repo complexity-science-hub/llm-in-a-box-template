@@ -51,6 +51,8 @@ Furthermore, you must have some kind of container runtime installed.
 For example:
 - Docker Desktop https://www.docker.com/products/docker-desktop/
 - Rancher Desktop https://rancherdesktop.io/
+  - this uses nerdctl
+  - all commands below should work with `nerdctl compose` instead of `docker compose`
 - Kubernetes
 - Podman
 - ...
