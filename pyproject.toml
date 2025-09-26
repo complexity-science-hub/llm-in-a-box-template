@@ -40,7 +40,7 @@ description = "Format yaml & toml files"
 env = { RUST_LOG = "warn" }
 
 [tool.pixi.tasks.tpl-init-cruft]
-cmd = "pixi run -e template cruft create git@github.com:complexity-science-hub/llm-in-a-box-template.git"
+cmd = "pixi run -e template cruft create https://github.com/complexity-science-hub/llm-in-a-box-template.git"
 description = "Initialize template"
 
 
