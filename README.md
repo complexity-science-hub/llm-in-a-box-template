@@ -62,10 +62,9 @@ For example:
 #### Docker (simple)
 For now we assume you are using docker.
 
-> NOTICE: Pixi will bootstrap most required tools i.e. git
+> NOTICE: Pixi will bootstrap most required tools
 
 ```bash
-pixi shell -e dev
 git clone https://github.com/complexity-science-hub/llm-in-a-box-template.git
 cd llm-in-a-box-template
 pixi run tpl-init-cruft
