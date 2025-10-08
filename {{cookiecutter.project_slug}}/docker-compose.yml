@@ -84,7 +84,7 @@ services:
   #     - auth_net
     
   modelserverollama-cpu:
-    image: ollama/ollama:0.12.3
+    image: ollama/ollama:0.12.4
     volumes:
       - ollama:/root/.ollama
     container_name: ollama
@@ -97,7 +97,7 @@ services:
         aliases:
           - ollama
   modelserverollama-gpu:
-    image: ollama/ollama:0.12.3
+    image: ollama/ollama:0.12.4
     #ports:
     #  - 11434:11434
     volumes:
@@ -154,7 +154,7 @@ services:
     volumes:
       - vllm:/root/models
   modelservervllm-gpu:
-    image: vllm/vllm-openai:v0.10.2
+    image: vllm/vllm-openai:v0.11.0
     container_name: modelserver
     hostname: modelserver
     environment:
@@ -222,7 +222,7 @@ services:
        - model_router_net
 
   llm_router:
-    image: litellm/litellm:v1.77.2-stable
+    image: litellm/litellm:v1.77.5-stable
     platform: linux/amd64
     container_name: llmrouter
     restart: unless-stopped
@@ -359,7 +359,7 @@ services:
   llm_chat_ui:
   # TODO: create GPU variation as well for faster whisper and embeddings
   # TODO add a vector database elastic? qdrant?
-    image: ghcr.io/open-webui/open-webui:v0.6.31
+    image: ghcr.io/open-webui/open-webui:v0.6.33
     container_name: chatui
     volumes:
       - open-webui:/app/backend/data
