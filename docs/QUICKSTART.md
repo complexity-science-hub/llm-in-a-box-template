@@ -46,11 +46,23 @@ docker compose version
 # If you haven't cloned yet
 git clone <your-repo-url>
 cd llm-in-a-box-template
+```
 
+### 2. Run the initialization task
+
+```bash
 pixi run tpl-init-cruft
 ```
 
-### 2. Set Up Environment Variables
+When prompted answer the questions asked by `pixi run`. The defaults
+work for a first exploration. Note the value entered for `project_slug`
+and change to the directory created with that name, e.g.
+
+```bash
+cd llm_in_a_box
+```
+
+### 3. Set Up Environment Variables
 
 We've created an automated script to generate your `.env` file with secure values:
 
@@ -66,7 +78,7 @@ This will create a `.env` file with:
 - API keys from your environment (if OPENAI_API_KEY or ANTHROPIC_API_KEY are set)
 - Standard database naming conventions (litellm, openwebui)
 
-### 3. Add Your API Keys
+### 4. Add Your API Keys
 
 You'll need to manually add API keys for the AI models you want to use:
 
