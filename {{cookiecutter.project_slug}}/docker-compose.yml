@@ -84,7 +84,7 @@ services:
   #     - auth_net
     
   modelserverollama-cpu:
-    image: ollama/ollama:0.12.4
+    image: ollama/ollama:0.12.11
     volumes:
       - ollama:/root/.ollama
     container_name: ollama
@@ -97,7 +97,7 @@ services:
         aliases:
           - ollama
   modelserverollama-gpu:
-    image: ollama/ollama:0.12.4
+    image: ollama/ollama:0.12.11
     #ports:
     #  - 11434:11434
     volumes:
@@ -200,7 +200,7 @@ services:
   #   networks:
   #      - auth_net
   routerdb:
-    image: postgres:18.0-alpine3.22
+    image: postgres:18.1-alpine3.22
     container_name: routerdb
     restart: unless-stopped
     environment:
@@ -222,7 +222,7 @@ services:
        - model_router_net
 
   llm_router:
-    image: litellm/litellm:v1.77.5-stable
+    image: litellm/litellm:v1.79.1-stable
     platform: linux/amd64
     container_name: llmrouter
     restart: unless-stopped
@@ -272,7 +272,7 @@ services:
       - "traefik.http.routers.litellm.middlewares=chain-no-auth@file"
 
   chatuidb:
-    image: postgres:18.0-alpine3.22
+    image: postgres:18.1-alpine3.22
     container_name: chatuidb
     restart: unless-stopped
     environment:
@@ -328,7 +328,7 @@ services:
               capabilities: [gpu]
 
   vectordb-qdrant-cpu:
-    image: qdrant/qdrant:v1.15.4
+    image: qdrant/qdrant:v1.15.5
     container_name: qdrant
     hostname: qdrant
     restart: unless-stopped
@@ -359,7 +359,7 @@ services:
   llm_chat_ui:
   # TODO: create GPU variation as well for faster whisper and embeddings
   # TODO add a vector database elastic? qdrant?
-    image: ghcr.io/open-webui/open-webui:v0.6.33
+    image: ghcr.io/open-webui/open-webui:v0.6.36
     container_name: chatui
     volumes:
       - open-webui:/app/backend/data
