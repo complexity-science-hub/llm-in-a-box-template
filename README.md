@@ -25,15 +25,15 @@ This project is a contribution of the [Complexity Science Hub](https://complexit
 This template project is published to [JOSE (journal of open source education)](https://jose.theoj.org/).
 You find the DOI here: <<TODO finish publication>>>
 
-The source code for the publication is availabe in the `docs/paper.md` file.
+The source code for the publication is available in the `docs/paper.md` file.
 
 ## Using the template
 
 We intend to eventually have more deployment processes scaffolded. However, this is usually fairly specific for a given organization.
 Therefore, we start out with `docker compose`.
-And perhaps later will add soemthing for Kubernets with fluxcd.
+And perhaps later will add something for Kubernetes with fluxcd.
 
-You may want to customize a productiion grade deployment for SSL handling and SSO.
+You may want to customize a production grade deployment for SSL handling and SSO.
 But we hope this gives you a good starting point.
 
 See the [QUICKSTART.md](./docs/QUICKSTART.md) for an in-depth quick start guide.
@@ -117,7 +117,7 @@ QDRANT__SERVICE__API_KEY=somepassword
 ```
 
 
-Finally, start the servies
+Finally, start the services
 
 
 ```bash
@@ -171,12 +171,12 @@ finally in your browser navigate to:
     - connection URL: `http://llmrouter:4000/v1`
     - api key: the one you created above
     - ensure the default openai API is disabled - and all traffic goes through the model router
-- Litelm model router: llm.llminabox.geoheil.com
+- Litellm model router: llm.llminabox.geoheil.com
 
 #### Kubernetes (advanced)
 
 This is a more advanced setup.
-We use [fluxcd](https://fluxcd.io/) and and [k3s](https://k3s.io/).
+We use [fluxcd](https://fluxcd.io/) and [k3s](https://k3s.io/).
 
 
 For details see [Advanced setup](./docs/setup-advanced-k3s-fluxcd.md).
@@ -194,7 +194,7 @@ To render an instance of the project:
 pixi run render-dev
 ```
 
-see [rendered-template/*](rendered-template) for an example of how the peoject might look like.
+see [rendered-template/*](rendered-template) for an example of how the project might look like.
 
 ```bash
 # brings up the CPU template quickly
